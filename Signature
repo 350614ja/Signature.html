@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Signature Pad</title>
+    <style>
+        canvas {
+            border: 1px solid #000;
+            width: 100%;
+            height: 200px;
+        }
+    </style>
+</head>
+<body>
+    <h3>Sign Below:</h3>
+    <canvas id="signature-pad"></canvas>
+    <br>
+    <button onclick="clearCanvas()">Clear</button>
+    <button onclick="saveSignature()">Save</button>
+    <script>
+        const canvas = document.getElementById('signature-pad');
+        const ctx = canvas.getContext('2d');
+        let drawing = false;
+
+        canvas.addEventListener('mousedown', (e) => {
+            drawing = true;
+            ctx.moveTo(e.clientX - canvas.offsetLeft, e.clientY - canvas.offsetTop);
+        });
+
+        canvas.addEventListener('mousemove', (e) => {
+            if (drawing) {
+                ctx.lineTo(e.clientX - canvas.offsetLeft, e.clientY - canvas.offsetTop);
+                ctx.stroke();
+            }
+        });
+
+        canvas.addEventListener('mouseup', () => {
+            drawing = false;
+        });
+
+        canvas.addEventListener('mouseout', () => {
+            drawing = false;
+        });
+
+        function clearCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+
+        function saveSignature() {
+            const dataURL = canvas.toDataURL();
+            window.open(dataURL, '_blank');
+        }
+    </script>
+</body>
+</html>
